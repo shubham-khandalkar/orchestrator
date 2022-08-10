@@ -104,7 +104,8 @@ def run(program_name, args='', timer=False):
     """
     red = PROGRAMS_LIST.get(program_name)
     if red is None:
-        print('No script found')
+        print('No script found. Press any key to exit')
+        input()
         exit()
     if red.type == 'python':
         print('executing command: ' + "python " +
@@ -202,10 +203,12 @@ if __name__ == '__main__':
     DATA_FILE_LOCATION = os.path.join(DATA_FILE_LOCATION, "orc_data.dat")
     read()
     args = sys.argv[1:]
-    if not args:
-        print('invalid entry')
-        exit()
-
+    while not args:
+        print('>', end='')
+        args = input().split()
+        if args and args[0].lower() in ('exit','quit'):
+            exit()
+    
     command = args[0]
     args = args[1:]
     if command not in ('add', 'ls', 'clean', '--help'):
@@ -230,7 +233,7 @@ if __name__ == '__main__':
                 program_name = args[0]
             else:
                 program_name = command
-        run(program_name, ' '.join(args), timer)
+        run(program_name, ' '.join(['"' + a + '"' for a in args]), timer)
     else:
         if command == 'add':
             script_type = 'python'
@@ -262,3 +265,4 @@ if __name__ == '__main__':
             clean(False)
         elif command == '--help':
             orc_help('')
+            input()
