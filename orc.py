@@ -72,10 +72,10 @@ def add(program_name, location, script_type='python'):
         else:
             red.command = program_name + ".py"
         red.name = program_name
-        if "\\" + command != location[-len(command) - 1:]:
+        if "/" + command != location[-len(command) - 1:]:
             red.directory = os.path.abspath(location)
         else:
-            red.directory = location[:-location[::-1].index("\\")]
+            red.directory = location[:-location[::-1].index("/")]
     else:
         red.type = script_type
         red.directory = location
@@ -108,18 +108,18 @@ def run(program_name, args='', timer=False):
         input()
         exit()
     if red.type == 'python':
-        print('executing command: ' + "python " +
+        print('executing command: ' + "python3 " +
               os.path.join(red.directory, red.command) + ' ' + args)
-        timewrapped("python " + os.path.join(red.directory, red.command) +
+        timewrapped("python3 " + os.path.join(red.directory, red.command) +
                     ' ' + args, timer)
     else:
         if red.type == 'directory':
-            print('executing command: ' + red.directory + "\\" + args)
-            timewrapped(red.directory + "\\" + args, timer)
+            print('executing command: ' + red.directory + "/" + args)
+            timewrapped(red.directory + "/" + args, timer)
         else:
-            print('executing command: ' + red.directory + "\\" + red.command +
+            print('executing command: ' + red.directory + "/" + red.command +
                   " " + args)
-            timewrapped(red.directory + "\\" + red.command + " " + args, timer)
+            timewrapped(red.directory + "/" + red.command + " " + args, timer)
 
 
 def orc_list():
@@ -195,9 +195,9 @@ def orc_help(command=None):
 
 if __name__ == '__main__':
     DATA_FILE_LOCATION = sys.argv[0]
-    if '\\' in DATA_FILE_LOCATION:
+    if '/' in DATA_FILE_LOCATION:
         DATA_FILE_LOCATION = DATA_FILE_LOCATION[:-DATA_FILE_LOCATION[::-1]
-                                                .index("\\")]
+                                                .index("/")]
     else:
         DATA_FILE_LOCATION = os.getcwd()
     DATA_FILE_LOCATION = os.path.join(DATA_FILE_LOCATION, "orc_data.dat")
@@ -248,8 +248,10 @@ if __name__ == '__main__':
                 script_type = 'directory'
                 args = args[1:]
             if len(args) == 1:
+                print('type1', args[0], os.getcwd(), script_type)
                 add(args[0], os.getcwd(), script_type)
             elif len(args) == 2:
+                print('type2', args[0], args[1], script_type)
                 add(args[0], args[1], script_type)
             else:
                 print('invalid entry ' + str(sys.argv[1:]))
